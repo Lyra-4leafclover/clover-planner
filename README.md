@@ -88,6 +88,7 @@ There are no accounts and no server. Everything you make is saved in your own br
 | File | What to change there |
 | --- | --- |
 | `css/style.css` | Colours and fonts. The `:root` colours at the top restyle the whole site. |
+| `js/config.js` | Your name and contact links (X, GitHub, website) shown on the site. |
 | `js/example.js` | The example planner new visitors see first. |
 | `js/generate.js` | How plans are built: subject balancing, catch-up days, revision and days between exams. |
 | `js/app.js` | The pages: home, setup, planner and shared links. |
@@ -97,5 +98,6 @@ There are no accounts and no server. Everything you make is saved in your own br
 
 <p align="center">
   <img src="assets/clover.png" alt="" width="28"><br>
-  <sub>made with care for every student · by <a href="https://github.com/Lyra-4leafclover">@Lyra-4leafclover</a></sub>
+  <sub>made with care for every student by Lyra</sub><br>
+  <sub><a href="https://x.com/Lyra_void">X</a> · <a href="https://github.com/Lyra-4leafclover">GitHub</a> · <a href="https://lyradossier.vercel.app/">Portfolio</a></sub>
 </p>
