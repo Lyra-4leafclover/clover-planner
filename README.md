@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLyra-4leafclover%2Fclover-planner&project-name=clover-planner&repository-name=clover-planner"><img src="https://vercel.com/button" alt="Deploy with Vercel"></a>
+  <a href="https://clover-planner-seven.vercel.app"><strong>✨ Open Clover Planner ✨</strong></a>
 </p>
 
 <p align="center">
@@ -75,20 +75,12 @@ That line becomes a 90-minute task called *Unit 3 — Enzymes & kinetics*, with 
 
 There are no accounts and no server. Everything you make is saved in your own browser, so each visitor only ever sees their own planners. To move planners to another device, use **Backup** and then **Open a backup file** there.
 
-## 🚀 &nbsp;Make your own copy
+## 🗂️ &nbsp;What's inside
 
-**On Vercel (free):** click the **Deploy with Vercel** button above, sign in with GitHub and click **Deploy**. After that, the site updates itself every time this repo changes.
-
-**On any other static host** (Netlify, GitHub Pages, Cloudflare Pages…): upload the files as they are. There's nothing to build.
-
-**On your computer:** open a terminal in this folder, run `python3 -m http.server 8080`, then open http://localhost:8080. Just double-clicking `index.html` won't work, because browsers block the scripts on `file://` pages.
-
-## 🎨 &nbsp;Make it yours
-
-| File | What to change there |
+| File | What it is |
 | --- | --- |
 | `css/style.css` | Colours and fonts. The `:root` colours at the top restyle the whole site. |
-| `js/config.js` | Your name and contact links (X, GitHub, website) shown on the site. |
+| `js/config.js` | The contact links (X, GitHub, website) shown on the site. |
 | `js/example.js` | The example planner new visitors see first. |
 | `js/generate.js` | How plans are built: subject balancing, catch-up days, revision and days between exams. |
 | `js/app.js` | The pages: home, setup, planner and shared links. |
