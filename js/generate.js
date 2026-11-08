@@ -1,6 +1,8 @@
 import { range, addDays, dow, slug, fmtShort } from "./util.js";
 
 // "Title | details | minutes" — everything after the title is optional.
+const clip = (s, n) => s.length <= n ? s : s.slice(0, s.lastIndexOf(" ", n - 1)).replace(/[,\s]+$/, "") + "…";
+
 export function parseLines(text, defMin) {
   return String(text || "").split("\n").map(l => l.trim()).filter(Boolean).map(line => {
     const parts = line.split("|").map(s => s.trim());
@@ -106,7 +108,7 @@ export function generate(plan) {
       let room = capacity(plan, d) - (isRest(plan, d) ? CATCHUP : 0);
       while (room > 30 && ci < chunks.length * 2) {
         const c = chunks[ci % chunks.length]; ci++;
-        days[d].push({ id: `rev-${d}-${days[d].length}`, s: c.s.id, kind: "revise", m: 60, t: `Revise: ${c.items.map(x => x.t).join(", ")}`.slice(0, 90), d: "Re-read your notes, then close them and write the key points from memory." });
+        days[d].push({ id: `rev-${d}-${days[d].length}`, s: c.s.id, kind: "revise", m: 60, t: clip(`Revise: ${c.items.map(x => x.t.split(" — ")[0]).join(", ")}`, 80), d: `${c.items.map(x => x.t).join(" · ")}. Re-read your notes, then close them and write the key points from memory.` });
         room -= 60;
       }
     }
