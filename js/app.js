@@ -51,7 +51,7 @@ function importText(txt) {
 /* ---------------- Home ---------------- */
 function renderHome() {
   document.title = "Clover Planner — study plans that feel doable";
-  const ps = store.planners();
+  const ps = store.planners().filter(p => !p.hidden);
   app.innerHTML = `
   <header class="hero">
     <picture><source media="(max-width:700px)" srcset="assets/hero-sm.webp"><img src="assets/hero.webp" alt="" class="hero-art"></picture>
@@ -268,6 +268,7 @@ function renderPlan(p) {
       <div class="countdown">${left > 1 ? `${left} days until exams` : left === 1 ? "Exams start tomorrow — you've got this" : left === 0 ? "Exam day — good luck!" : "Exams are underway"}</div>
     </div>
     ${p.warning ? `<div class="note warn">${esc(p.warning)}</div>` : ""}
+    ${p.note ? `<div class="note info">${esc(p.note)}</div>` : ""}
     <section class="panel">
       <div class="prog-top"><b>Your progress</b><span id="pct"></span></div>
       <div class="bar big"><i id="bar"></i></div>
