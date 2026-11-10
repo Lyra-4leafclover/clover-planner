@@ -1,4 +1,5 @@
 import { EXAMPLE } from "./example.js";
+import { PRIVATE } from "./personal.js";
 import { uid, todayISO, addDays } from "./util.js";
 
 const KEY = "clover-planner.v1";
@@ -11,6 +12,7 @@ function load() {
     save();
   }
 }
+export const privateEntry = id => PRIVATE.find(e => e.id === id);
 export function save() { localStorage.setItem(KEY, JSON.stringify(db)); }
 export const planners = () => db.planners;
 export const getPlanner = id => db.planners.find(p => p.id === id);

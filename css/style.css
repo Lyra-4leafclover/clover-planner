@@ -85,6 +85,7 @@ details>summary{cursor:pointer;font-weight:800;margin:4px 0 10px}
 .warn{color:#b5533f}.ok{color:#4c8f6f}
 .note{border-radius:14px;padding:12px 16px;margin-bottom:16px;font-weight:600}
 .note.warn{background:#fbe9e2}
+.note.info{background:#eef4ea;font-weight:500}
 
 /* plan */
 .plan-head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:16px}
