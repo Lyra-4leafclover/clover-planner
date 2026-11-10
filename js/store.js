@@ -1,5 +1,5 @@
 import { EXAMPLE } from "./example.js";
-import { PERSONAL } from "./personal.js";
+import { PRIVATE } from "./personal.js";
 import { uid, todayISO, addDays } from "./util.js";
 
 const KEY = "clover-planner.v1";
@@ -11,10 +11,8 @@ function load() {
     db = { planners: [structuredClone(EXAMPLE)] };
     save();
   }
-  let added = false;
-  PERSONAL.forEach(p => { if (!db.planners.some(x => x.id === p.id)) { db.planners.push(structuredClone(p)); added = true; } });
-  if (added) save();
 }
+export const privateEntry = id => PRIVATE.find(e => e.id === id);
 export function save() { localStorage.setItem(KEY, JSON.stringify(db)); }
 export const planners = () => db.planners;
 export const getPlanner = id => db.planners.find(p => p.id === id);

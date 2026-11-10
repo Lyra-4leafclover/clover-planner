@@ -3,6 +3,7 @@ import { $, $$, esc, uid, addDays, range, fmtDay, fmtShort, fmtLong, todayISO, d
 import * as store from "./store.js";
 import { generate, summary, examOf, capacity } from "./generate.js";
 import { encodePlan, decodePlan } from "./share.js";
+import { unlock } from "./personal.js";
 
 const app = $("#app");
 const GENERAL = { name: "General", color: "#e8b46c" };
@@ -13,6 +14,7 @@ function route() {
   const [, view, arg] = location.hash.split("/");
   filter = view === "plan" ? filter : null;
   if (view === "plan" && store.getPlanner(arg)) return renderPlan(store.getPlanner(arg));
+  if (view === "plan" && store.privateEntry(arg)) return renderUnlock(store.privateEntry(arg));
   if (view === "edit" && store.getPlanner(arg)) return renderEdit(store.getPlanner(arg));
   if (view === "share" && arg) return renderShare(arg);
   renderHome();
@@ -388,6 +390,19 @@ function renderPlan(p) {
 }
 
 /* ---------------- Shared link ---------------- */
+function renderUnlock(entry) {
+  document.title = `${entry.title} · Clover Planner`;
+  app.innerHTML = `<main class="wrap narrow"><a class="back" href="#/">← My planners</a>
+    <div class="panel"><h2>${esc(entry.title)}</h2><p class="muted">This planner is private. Enter the passphrase to open it on this device.</p>
+      <form id="unlock" class="row"><input type="password" id="pass" placeholder="Passphrase" autocomplete="current-password" required autofocus>
+      <button class="btn dark" type="submit">Open</button></form><p class="muted small" id="umsg"></p></div></main>${footer()}`;
+  $("#unlock").onsubmit = async e => {
+    e.preventDefault();
+    $("#umsg").textContent = "Opening…";
+    try { const plan = await unlock(entry, $("#pass").value.trim()); store.putPlanner(plan); renderPlan(plan); window.scrollTo(0, 0); toast("Planner opened"); }
+    catch { $("#umsg").textContent = "That passphrase didn't work."; $("#pass").select(); }
+  };
+}
 async function renderShare(code) {
   let plan;
   try { plan = await decodePlan(code); } catch { app.innerHTML = `<main class="wrap narrow"><a class="back" href="#/">← My planners</a><div class="panel"><h2>That link doesn't work</h2><p class="muted">It may have been cut off when it was copied. Ask for the link again.</p></div></main>`; return; }
