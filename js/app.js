@@ -15,6 +15,7 @@ function route() {
   filter = view === "plan" ? filter : null;
   if (view === "plan" && store.getPlanner(arg)) return renderPlan(store.getPlanner(arg));
   if (view === "plan" && store.privateEntry(arg)) return renderUnlock(store.privateEntry(arg));
+  if (view === "refresh" && store.privateEntry(arg)) return renderUnlock(store.privateEntry(arg), true);
   if (view === "edit" && store.getPlanner(arg)) return renderEdit(store.getPlanner(arg));
   if (view === "share" && arg) return renderShare(arg);
   renderHome();
@@ -281,6 +282,7 @@ function renderPlan(p) {
         <button class="btn sm" id="b-share">Share</button>
         <button class="btn sm" id="b-print">Print / PDF</button>
         <button class="btn sm" id="b-backup">Backup</button>
+        ${store.privateEntry(p.id) ? `<button class="btn sm" id="b-refresh">Refresh plan</button>` : ""}
         <button class="btn sm ghost" id="b-reset">Clear ticks</button>
       </div>
     </section>
@@ -332,6 +334,7 @@ function renderPlan(p) {
   $("#b-edit").onclick = () => go(`#/edit/${p.id}`);
   $("#b-print").onclick = () => print();
   $("#b-backup").onclick = () => download(`${p.name.replace(/[^\w-]+/g, "_")}.clover.json`, JSON.stringify(p, null, 1));
+  $("#b-refresh") && ($("#b-refresh").onclick = () => go(`#/refresh/${p.id}`));
   $("#b-reset").onclick = () => { if (confirm("Untick every task?")) { p.done = {}; rerender(); } };
   $("#b-share").onclick = async () => {
     const url = `${location.origin}${location.pathname}#/share/${await encodePlan(p)}`;
@@ -390,16 +393,23 @@ function renderPlan(p) {
 }
 
 /* ---------------- Shared link ---------------- */
-function renderUnlock(entry) {
+function renderUnlock(entry, refresh = false) {
   document.title = `${entry.title} · Clover Planner`;
   app.innerHTML = `<main class="wrap narrow"><a class="back" href="#/">← My planners</a>
-    <div class="panel"><h2>${esc(entry.title)}</h2><p class="muted">This planner is private. Enter the passphrase to open it on this device.</p>
+    <div class="panel"><h2>${esc(entry.title)}</h2><p class="muted">${refresh ? "Enter the passphrase to load the latest version of this planner. Your ticks are kept." : "This planner is private. Enter the passphrase to open it on this device."}</p>
       <form id="unlock" class="row"><input type="password" id="pass" placeholder="Passphrase" autocomplete="current-password" required autofocus>
       <button class="btn dark" type="submit">Open</button></form><p class="muted small" id="umsg"></p></div></main>${footer()}`;
   $("#unlock").onsubmit = async e => {
     e.preventDefault();
     $("#umsg").textContent = "Opening…";
-    try { const plan = await unlock(entry, $("#pass").value.trim()); store.putPlanner(plan); renderPlan(plan); window.scrollTo(0, 0); toast("Planner opened"); }
+    try {
+      const plan = await unlock(entry, $("#pass").value.trim());
+      const old = store.getPlanner(plan.id);
+      if (old) plan.done = old.done || {};
+      store.putPlanner(plan);
+      history.replaceState(null, "", `#/plan/${plan.id}`);
+      renderPlan(plan); window.scrollTo(0, 0); toast(refresh ? "Planner updated to the latest version" : "Planner opened");
+    }
     catch { $("#umsg").textContent = "That passphrase didn't work."; $("#pass").select(); }
   };
 }
