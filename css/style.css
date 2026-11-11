@@ -148,3 +148,5 @@ dialog::backdrop{background:rgba(59,51,64,.4)}
  .now{display:none}
  .t.dim{opacity:1}.day.hide{display:block}
 }
+
+.t .dd{white-space:pre-line}
