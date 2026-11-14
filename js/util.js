@@ -1,7 +1,16 @@
 export const $ = (sel, el = document) => el.querySelector(sel);
 export const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
 export const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-export const linkify = s => esc(s).replace(/https?:\/\/[^\s<>"')\]]+?(?=[.,;:!?]*(?:[\s<>"')\]]|$))/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`);
+export const linkify = s => {
+  const str = String(s ?? ""); let out = "", at = 0;
+  for (const m of str.matchAll(/https?:\/\/[^\s<>"'\]]+/g)) {
+    let url = m[0];
+    while (/[.,;:!?]$/.test(url) || (url.endsWith(")") && url.split("(").length < url.split(")").length)) url = url.slice(0, -1);
+    out += esc(str.slice(at, m.index)) + `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(url)}</a>`;
+    at = m.index + url.length;
+  }
+  return out + esc(str.slice(at));
+};
 export const uid = (p = "") => p + Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-4);
 
 export const parseISO = iso => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d); };
