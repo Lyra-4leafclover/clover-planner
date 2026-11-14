@@ -1,5 +1,5 @@
 import { CONTACT } from "./config.js";
-import { $, $$, esc, uid, addDays, range, fmtDay, fmtShort, fmtLong, todayISO, diffDays, dow, hours, COLORS, WEEKDAYS } from "./util.js";
+import { $, $$, esc, linkify, uid, addDays, range, fmtDay, fmtShort, fmtLong, todayISO, diffDays, dow, hours, COLORS, WEEKDAYS } from "./util.js";
 import * as store from "./store.js";
 import { generate, summary, examOf, capacity } from "./generate.js";
 import { encodePlan, decodePlan } from "./share.js";
@@ -247,7 +247,7 @@ function renderPlan(p) {
     const s = subjOf(p, t.s);
     return `<div class="t ${p.done[t.id] ? "ck" : ""}" draggable="true" data-id="${esc(t.id)}" data-day="${d}" data-s="${t.s || "_g"}" style="--c:${s.color}">
       <input type="checkbox" ${p.done[t.id] ? "checked" : ""} aria-label="done">
-      <div class="tb" data-edit><div class="tag">${esc(s.name)}${t.kind === "lab" ? " · lab" : t.kind === "revise" ? " · revision" : ""}</div><div class="tt">${esc(t.t)}</div>${t.d ? `<div class="dd">${esc(t.d)}</div>` : ""}</div>
+      <div class="tb" data-edit><div class="tag">${esc(s.name)}${t.kind === "lab" ? " · lab" : t.kind === "revise" ? " · revision" : ""}</div><div class="tt">${esc(t.t)}</div>${t.d ? `<div class="dd">${linkify(t.d)}</div>` : ""}</div>
       <span class="m">${t.m} min</span></div>`;
   };
   const dayHTML = (d, i) => {
@@ -325,6 +325,7 @@ function renderPlan(p) {
   };
   app.onclick = e => {
     const t = e.target;
+    if (t.closest(".dd a")) return;
     if (t.closest("[data-edit]")) return openTask(findTask(t.closest(".t").dataset.id));
     if (t.dataset.add) return openTask(null, t.dataset.add);
     const chip = t.closest(".chip");

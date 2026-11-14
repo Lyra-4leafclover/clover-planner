@@ -7,6 +7,12 @@ export const PRIVATE = [
   { id: "annika-plan3", title: "Annika's Plan 3 (2027–28)", file: "data/private/annika-plan3.json" },
   { id: "annika-plan4", title: "Annika's Plan 4 (2027–28)", file: "data/private/annika-plan4.json" },
   { id: "annika-dsa", title: "Annika's DSA planner", file: "data/private/annika-dsa.json" },
+  { id: "annika-plan1-res", title: "Annika's Plan 1 + resources", file: "data/private/annika-plan1-res.json" },
+  { id: "annika-plan2-res", title: "Annika's Plan 2 + resources", file: "data/private/annika-plan2-res.json" },
+  { id: "annika-plan3-res", title: "Annika's Plan 3 + resources", file: "data/private/annika-plan3-res.json" },
+  { id: "annika-plan4-res", title: "Annika's Plan 4 + resources", file: "data/private/annika-plan4-res.json" },
+  { id: "annika-dsa-res", title: "Annika's DSA planner + resources", file: "data/private/annika-dsa-res.json" },
+  { id: "annika-gsoc", title: "Annika's GSoC 2027 planner", file: "data/private/annika-gsoc.json" },
 ];
 
 const bytes = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
