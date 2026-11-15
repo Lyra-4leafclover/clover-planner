@@ -3,7 +3,7 @@ import { $, $$, esc, linkify, uid, addDays, range, fmtDay, fmtShort, fmtLong, to
 import * as store from "./store.js";
 import { generate, summary, examOf, capacity } from "./generate.js";
 import { encodePlan, decodePlan } from "./share.js";
-import { unlock } from "./personal.js";
+import { unlock, PRIVATE } from "./personal.js";
 
 const app = $("#app");
 const GENERAL = { name: "General", color: "#e8b46c" };
@@ -18,6 +18,7 @@ function route() {
   if (view === "refresh" && store.privateEntry(arg)) return renderUnlock(store.privateEntry(arg), true);
   if (view === "edit" && store.getPlanner(arg)) return renderEdit(store.getPlanner(arg));
   if (view === "share" && arg) return renderShare(arg);
+  if (view === "mine") return renderMine();
   renderHome();
 }
 const go = h => { location.hash = h; window.scrollTo(0, 0); };
@@ -391,6 +392,43 @@ function renderPlan(p) {
     };
     $("#m-del") && ($("#m-del").onclick = ev => { ev.preventDefault(); if (confirm("Delete this task?")) { p.days[found.d].splice(found.i, 1); delete p.done[t.id]; dlg.close(); rerender(); } });
   }
+}
+
+/* ---------------- Private hub ---------------- */
+let hubPass = "";
+const HUB_GROUPS = [["Original", e => e.id === "annika-dec-2026"], ["GSoC", e => e.id.includes("gsoc")], ["With resource links", e => e.id.endsWith("-res")], ["Main plans", () => true]];
+function renderMine() {
+  document.title = "My private planners · Clover Planner";
+  if (!hubPass) {
+    app.innerHTML = `<main class="wrap narrow"><a class="back" href="#/">← My planners</a>
+      <div class="panel"><h2>My private planners</h2><p class="muted">Enter the passphrase to see all your private planners.</p>
+        <form id="unlock" class="row"><input type="password" id="pass" placeholder="Passphrase" autocomplete="current-password" required autofocus>
+        <button class="btn dark" type="submit">Show</button></form><p class="muted small" id="umsg"></p></div></main>${footer()}`;
+    $("#unlock").onsubmit = async e => {
+      e.preventDefault(); $("#umsg").textContent = "Checking…";
+      const pass = $("#pass").value.trim();
+      try { await unlock(PRIVATE[0], pass); hubPass = pass; renderMine(); }
+      catch { $("#umsg").textContent = "That passphrase didn't work."; $("#pass").select(); }
+    };
+    return;
+  }
+  const left = [...PRIVATE], picked = HUB_GROUPS.map(([name, test]) => [name, left.filter(test).map(e => (left.splice(left.indexOf(e), 1), e))]);
+  const groups = [0, 3, 2, 1].map(i => picked[i]);
+  app.innerHTML = `<main class="wrap narrow"><a class="back" href="#/">← My planners</a>
+    <div class="panel"><h2>My private planners</h2><p class="muted small">Opening one loads its latest version; your ticks are kept.</p></div>
+    ${groups.filter(([, es]) => es.length).map(([name, es]) => `<div class="panel"><h2>${esc(name)}</h2>
+      <div class="row">${es.map(e => `<button class="btn" data-open="${esc(e.id)}">${esc(e.title.replace(/^Annika's /, ""))}${store.getPlanner(e.id) ? "" : " · new"}</button>`).join("")}</div></div>`).join("")}
+    <p class="muted small" id="umsg"></p></main>${footer()}`;
+  $$("[data-open]").forEach(b => b.onclick = async () => {
+    const entry = store.privateEntry(b.dataset.open);
+    $("#umsg").textContent = `Opening ${entry.title}…`;
+    try {
+      const plan = await unlock(entry, hubPass);
+      const old = store.getPlanner(plan.id);
+      if (old) plan.done = old.done || {};
+      store.putPlanner(plan); go(`#/plan/${plan.id}`);
+    } catch { $("#umsg").textContent = "Couldn't open that planner. Try again."; }
+  });
 }
 
 /* ---------------- Shared link ---------------- */
