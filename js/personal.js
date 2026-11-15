@@ -13,6 +13,8 @@ export const PRIVATE = [
   { id: "annika-plan4-res", title: "Annika's Plan 4 + resources", file: "data/private/annika-plan4-res.json" },
   { id: "annika-dsa-res", title: "Annika's DSA planner + resources", file: "data/private/annika-dsa-res.json" },
   { id: "annika-gsoc", title: "Annika's GSoC 2027 planner", file: "data/private/annika-gsoc.json" },
+  { id: "annika-plan1-gsoc", title: "Annika's Plan 1 + GSoC 2027", file: "data/private/annika-plan1-gsoc.json" },
+  { id: "annika-plan4-gsoc", title: "Annika's Plan 4 + GSoC 2027", file: "data/private/annika-plan4-gsoc.json" },
 ];
 
 const bytes = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
