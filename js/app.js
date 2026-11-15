@@ -417,7 +417,7 @@ function renderMine() {
   app.innerHTML = `<main class="wrap narrow"><a class="back" href="#/">← My planners</a>
     <div class="panel"><h2>My private planners</h2><p class="muted small">Opening one loads its latest version; your ticks are kept.</p></div>
     ${groups.filter(([, es]) => es.length).map(([name, es]) => `<div class="panel"><h2>${esc(name)}</h2>
-      <div class="row">${es.map(e => `<button class="btn" data-open="${esc(e.id)}">${esc(e.title.replace(/^Annika's /, ""))}${store.getPlanner(e.id) ? "" : " · new"}</button>`).join("")}</div></div>`).join("")}
+      <div class="row">${es.map(e => `<button class="btn" data-open="${esc(e.id)}">${esc(e.id === "annika-dec-2026" ? "December 2026 exams + cloud" : e.title.replace(/^Annika's /, ""))}</button>`).join("")}</div></div>`).join("")}
     <p class="muted small" id="umsg"></p></main>${footer()}`;
   $$("[data-open]").forEach(b => b.onclick = async () => {
     const entry = store.privateEntry(b.dataset.open);
