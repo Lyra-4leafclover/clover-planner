@@ -396,7 +396,7 @@ function renderPlan(p) {
 
 /* ---------------- Private hub ---------------- */
 let hubPass = "";
-const HUB_GROUPS = [["Original", e => e.id === "annika-dec-2026"], ["GSoC", e => e.id.includes("gsoc")], ["With resource links", e => e.id.endsWith("-res")], ["Main plans", () => true]];
+const HUB_GROUPS = [["Exams (new dates)", e => e.id === "annika-exams-nov27"], ["Original", e => e.id === "annika-dec-2026"], ["GSoC", e => e.id.includes("gsoc")], ["With resource links", e => e.id.endsWith("-res")], ["Main plans", () => true]];
 function renderMine() {
   document.title = "My private planners · Clover Planner";
   if (!hubPass) {
@@ -413,7 +413,7 @@ function renderMine() {
     return;
   }
   const left = [...PRIVATE], picked = HUB_GROUPS.map(([name, test]) => [name, left.filter(test).map(e => (left.splice(left.indexOf(e), 1), e))]);
-  const groups = [0, 3, 2, 1].map(i => picked[i]);
+  const groups = [0, 1, 4, 3, 2].map(i => picked[i]);
   app.innerHTML = `<main class="wrap narrow"><a class="back" href="#/">← My planners</a>
     <div class="panel"><h2>My private planners</h2><p class="muted small">Opening one loads its latest version; your ticks are kept.</p></div>
     ${groups.filter(([, es]) => es.length).map(([name, es]) => `<div class="panel"><h2>${esc(name)}</h2>
