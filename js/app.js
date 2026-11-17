@@ -396,7 +396,7 @@ function renderPlan(p) {
 
 /* ---------------- Private hub ---------------- */
 let hubPass = "";
-const HUB_GROUPS = [["Exams (new dates)", e => e.id.startsWith("annika-exams")], ["Original", e => e.id === "annika-dec-2026"], ["GSoC", e => e.id.includes("gsoc")], ["With resource links", e => e.id.endsWith("-res")], ["Main plans", () => true]];
+const HUB_GROUPS = [["ML plans (from Jan 5)", e => e.id.startsWith("annika-ml")], ["Exams (new dates)", e => e.id.startsWith("annika-exams")], ["Original", e => e.id === "annika-dec-2026"], ["GSoC", e => e.id.includes("gsoc")], ["With resource links", e => e.id.endsWith("-res")], ["Main plans", () => true]];
 function renderMine() {
   document.title = "My private planners · Clover Planner";
   if (!hubPass) {

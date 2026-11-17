@@ -17,6 +17,12 @@ export const PRIVATE = [
   { id: "annika-gsoc", title: "Annika's GSoC 2027 planner", file: "data/private/annika-gsoc.json" },
   { id: "annika-plan1-gsoc", title: "Annika's Plan 1 + GSoC 2027", file: "data/private/annika-plan1-gsoc.json" },
   { id: "annika-plan4-gsoc", title: "Annika's Plan 4 + GSoC 2027", file: "data/private/annika-plan4-gsoc.json" },
+  { id: "annika-ml-plan1", title: "Annika's ML Plan 1 (2027–28)", file: "data/private/annika-ml-plan1.json" },
+  { id: "annika-ml-plan2", title: "Annika's ML Plan 2 (2027–28)", file: "data/private/annika-ml-plan2.json" },
+  { id: "annika-ml-plan3", title: "Annika's ML Plan 3 (2027–28)", file: "data/private/annika-ml-plan3.json" },
+  { id: "annika-ml-plan4", title: "Annika's ML Plan 4 (2027–28)", file: "data/private/annika-ml-plan4.json" },
+  { id: "annika-ml-1month", title: "Annika's ML internship sprint · 1 month", file: "data/private/annika-ml-1month.json" },
+  { id: "annika-ml-3month", title: "Annika's ML internship sprint · 3 months", file: "data/private/annika-ml-3month.json" },
 ];
 
 const bytes = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
