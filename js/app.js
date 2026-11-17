@@ -413,7 +413,7 @@ function renderMine() {
     return;
   }
   const left = [...PRIVATE], picked = HUB_GROUPS.map(([name, test]) => [name, left.filter(test).map(e => (left.splice(left.indexOf(e), 1), e))]);
-  const groups = [0, 1, 4, 3, 2].map(i => picked[i]);
+  const groups = [0, 1, 2, 5, 4, 3].map(i => picked[i]);
   app.innerHTML = `<main class="wrap narrow"><a class="back" href="#/">← My planners</a>
     <div class="panel"><h2>My private planners</h2><p class="muted small">Opening one loads its latest version; your ticks are kept.</p></div>
     ${groups.filter(([, es]) => es.length).map(([name, es]) => `<div class="panel"><h2>${esc(name)}</h2>
